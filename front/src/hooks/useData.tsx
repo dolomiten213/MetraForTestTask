@@ -34,6 +34,7 @@ export function useData()
             // console.log(message)
             setIdentityStatus(user ? IdentityStatus.Ok : IdentityStatus.Error)
         })
+        _hubConnection.onclose(() => alert("server is offline"));
         
         try {
             await _hubConnection.start()
@@ -132,18 +133,24 @@ export function useData()
         const headers = {
             'Authorization': 'bearer ' + token
         }
-        let res = await axios.post("http://localhost/api/identify", {
-            name: fullName,
-            inn: inn,
-            phone: phone,
-            series: series,
-            number: number,
-            city: city, 
-            street: street,
-            house: house,
-            position: position
-        }, {headers: headers})
-        setIdentityStatus(IdentityStatus.Processing)
+        try {
+            let res = await axios.post("http://localhost/api/identify", {
+                name: fullName,
+                inn: inn,
+                phone: phone,
+                series: series,
+                number: number,
+                city: city, 
+                street: street,
+                house: house,
+                position: position
+            }, {headers: headers})
+            setIdentityStatus(IdentityStatus.Processing)
+        }
+        catch
+        {
+            alert('server is offline')
+        }
     }
     
     

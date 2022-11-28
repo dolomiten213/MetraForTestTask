@@ -16,10 +16,13 @@ export function SignUpFrom(props: any)
         signUp, isBadPassword, token
     } = useAuth()
     
-    function checkStatus()
+    async function checkStatus()
     {
-        signUp()
-        props.setIsLogged(localStorage.getItem('token'))
+        localStorage.clear()
+        await signUp()
+        let token = localStorage.getItem('token')
+        console.log(token)
+        props.setIsLogged(token)
     }
     
     return(

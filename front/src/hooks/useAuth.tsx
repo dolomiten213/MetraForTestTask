@@ -14,10 +14,16 @@ export function useAuth()
             alert("passwords are not the same")
             return
         }
-        const res = await axios.post<ITokenDto>("http://localhost/api/auth/sign-up", { username: login, password: password})
-        localStorage.setItem('token', res.data.token)
-        setToken(res.data.token)
-        // console.log(res.data.token)
+        try {
+            const res = await axios.post<ITokenDto>("http://localhost/api/auth/sign-up", { username: login, password: password})
+            console.log(res)
+            localStorage.setItem('token', res.data.token)
+            setToken(res.data.token)
+        }
+        catch{
+            alert('server is offline')
+        } 
+            
     }
 
     const isBadPassword = () => password !== password2;
